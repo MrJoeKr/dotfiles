@@ -1,0 +1,35 @@
+#!/bin/bash
+
+{{ if eq .chezmoi.os "linux" -}}
+
+set -e
+
+# Official repositories
+sudo pacman -S --needed --noconfirm \
+{{ range .packages.arch.pacman -}}
+    {{ . }} \
+{{ end -}}
+
+# Install yay if necessary
+if ! command -v yay >/dev/null 2>&1; then
+    tmpdir="$(mktemp -d)"
+
+    git clone https://aur.archlinux.org/yay.git "$tmpdir/yay"
+    cd "$tmpdir/yay"
+    makepkg -si --noconfirm
+
+    rm -rf "$tmpdir"
+fi
+
+# AUR
+if command -v yay >/dev/null 2>&1; then
+    yay -S --needed --noconfirm \
+    {{ range .packages.arch.aur -}}
+        {{ . }} \
+    {{ end -}}
+else
+    echo "yay is not installed; skipping AUR packages."
+fi
+
+{{ end -}}
+

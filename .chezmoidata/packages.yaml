@@ -1,0 +1,22 @@
+packages:
+  arch:
+    pacman:
+      - base-devel
+      - git
+      - fish
+      - neovim
+      - tmux
+      - ripgrep
+      - fd
+      - fzf
+      - bat
+      - eza
+      - unzip
+      - zip
+      - super-productivity
+
+    aur:
+      - visual-studio-code-bin
+      - google-chrome
+      - spotify
+
