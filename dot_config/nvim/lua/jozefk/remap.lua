@@ -8,6 +8,9 @@ vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 vim.keymap.set('n', 'J', 'mzJ`z')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', '<C-i>', '<C-i>zz')
+vim.keymap.set('n', '<C-o>', '<C-o>zz')
+
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 
@@ -20,16 +23,15 @@ vim.keymap.set('n', '<leader>Y', [["+Y]])
 
 vim.keymap.set('n', 'Q', '<nop>')
 
--- greatest remap ever
-vim.keymap.set('x', '<leader>p', [["_dP]])
-
--- next greatest remap ever : asbjornHaland
-vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
-vim.keymap.set('n', '<leader>Y', [["+Y]])
-
--- TODO: QUICKFIX list?
+-- Quickfix and Location lists
+vim.keymap.set("n", "]q", "<cmd>cnext<CR>zz", { desc = "Next quickfix item and center" })
+vim.keymap.set("n", "[q", "<cmd>cprev<CR>zz", { desc = "Previous quickfix item and center" })
+vim.keymap.set("n", "]l", "<cmd>lnext<CR>zz", { desc = "Next loclist item and center" })
+vim.keymap.set("n", "[l", "<cmd>lprev<CR>zz", { desc = "Previous loclist item and center" })
 
 vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<CR>', { silent = true })
+
+vim.keymap.set('n', '<leader>w', '<Cmd>update<CR>', { desc = 'Save file' })
 
 --- Drop this when done with downloading plugins (not necessary)
 vim.keymap.set('n', '<leader>ms', '<cmd>Lazy sync<cr>', { desc = 'Lazy Sync Plugins' })
@@ -41,6 +43,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+
+    vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
+        vim.lsp.buf.format { async = true }
+    end, { desc = '[lsp] format buffer' })
+
     -- vim.keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, opts)
     -- Live search that queries your LSP client while typing
     vim.keymap.set(
@@ -49,7 +56,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
       require('fzf-lua').lsp_live_workspace_symbols,
       { desc = 'LSP Workspace Symbols' }
     )
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    -- vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+
     -- Enabled in cmp.lua
     -- vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { desc = "Signature Help" })
 

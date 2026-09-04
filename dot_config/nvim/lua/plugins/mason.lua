@@ -3,16 +3,21 @@
 -- https://mason-registry.dev/registry/list
 local PACKAGES = {
   -- LSP
+  'bashls',
+  'clangd',
   'css_variables',
   'cssls',
   'cssmodules_ls',
   'dockerls',
   'eslint',
+  -- 'rust-analyzer', -- handled by mrcjkb/rustaceanvim
   -- 'harper_ls',
+  'gopls',
   'html',
   'jsonls',
   'lua_ls',
   'pyright',
+  'sqls',
   'tailwindcss',
   'ts_query_ls',
   'ts_ls',
@@ -35,7 +40,13 @@ return {
     -- Bridge between mason.nvim and lspconfig
     -- https://github.com/mason-org/mason-lspconfig.nvim
     'mason-org/mason-lspconfig.nvim',
-    opts = {},
+    opts = {
+      handlers = {
+        ['rust_analyzer'] = function()
+          -- This prevents mason-lspconfig from automatically managing rust-analyzer.
+        end,
+      },
+    },
 
     dependencies = {
       'mason-org/mason.nvim',
