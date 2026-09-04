@@ -1,0 +1,30 @@
+{{ if and (eq .chezmoi.os "linux") (lookPath "kpackagetool6") -}}
+#!/bin/bash
+
+PLASMA_VERSION=$(plasmashell --version 2>/dev/null | awk '{print $2}')
+
+TEMP_DIR="/tmp/kwin-scripts-setup"
+rm -rf "$TEMP_DIR"
+
+
+if [[ "$PLASMA_VERSION" =~ ^6\. ]]; then
+    echo "KDE Plasma 6 detected ($PLASMA_VERSION). Running setup..."
+    echo "Cloning KWin scripts repository..."
+    git clone --depth 1 git@github.com:dodokr/kwin-scripts.git "$TEMP_DIR"
+
+    for script_dir in "$TEMP_DIR"/*/; do
+        # Strip the trailing slash
+        script_dir="${script_dir%/}"
+        
+        if [[ -d "$script_dir" && -f "$script_dir/metadata.json"  ]]; then
+            echo "Installing KWin script: $script_dir..."
+            kpackagetool6 --type KWin/Script -i "$script_dir"
+        fi
+    done
+
+else
+    echo "KDE Plasma 6 is not running (Found version: ${PLASMA_VERSION:-None}). Skipping."
+fi
+
+{{ end -}}
+

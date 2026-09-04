@@ -1,8 +1,7 @@
+{{ if eq .chezmoi.os "linux" -}}
 #!/bin/bash
 
-{{ if eq .chezmoi.os "linux" -}}
-
-set -e
+set -xe
 
 # Official repositories
 sudo pacman -S --needed --noconfirm \
