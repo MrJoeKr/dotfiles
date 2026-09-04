@@ -8,8 +8,10 @@ source /usr/share/cachyos-fish-config/cachyos-config.fish
 
 # Safe rm
 alias rmi='rm -i'
-
-# vim to nvim
 alias vim='nvim'
+alias ??='fabric -s'
+alias gp='git push'
 
-set -gx EDITOR "nvim"
+
+# opencode
+fish_add_path /home/jozefk/.opencode/bin
